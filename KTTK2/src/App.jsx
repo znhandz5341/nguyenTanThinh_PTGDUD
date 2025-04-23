@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
+import ProductItem from './components/ProductItem';
 
 function App() {
-  // Dữ liệu khởi tạo từ localStorage nếu có, nếu không có thì mặc định là mảng rỗng
   const loadProductsFromLocalStorage = () => {
     const storedProducts = localStorage.getItem('products');
     return storedProducts ? JSON.parse(storedProducts) : [];
@@ -18,7 +18,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  // Lưu sản phẩm vào localStorage mỗi khi danh sách sản phẩm thay đổi
   useEffect(() => {
     localStorage.setItem('products', JSON.stringify(products));
   }, [products]);
@@ -54,7 +53,6 @@ function App() {
 
   const uniqueCategories = [...new Set(products.map(p => p.category))];
 
-  // Tính tổng số sản phẩm và tổng tồn kho sau khi lọc
   const totalProducts = filteredProducts.length;
   const totalStock = filteredProducts.reduce((sum, p) => sum + p.stock, 0);
 
@@ -140,20 +138,7 @@ function App() {
         </thead>
         <tbody>
           {filteredProducts.map(p => (
-            <tr key={p.id}>
-              <td className="border p-2">{p.name}</td>
-              <td className="border p-2">{p.price.toLocaleString()} đ</td>
-              <td className="border p-2">{p.category}</td>
-              <td className="border p-2">{p.stock}</td>
-              <td className="border p-2 text-center">
-                <button
-                  onClick={() => handleDelete(p.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  Xoá
-                </button>
-              </td>
-            </tr>
+            <ProductItem key={p.id} product={p} onDelete={handleDelete} />
           ))}
         </tbody>
       </table>
