@@ -48,6 +48,10 @@ function App() {
 
   const uniqueCategories = [...new Set(products.map(p => p.category))];
 
+  // Tính tổng số sản phẩm và tổng tồn kho sau khi lọc
+  const totalProducts = filteredProducts.length;
+  const totalStock = filteredProducts.reduce((sum, p) => sum + p.stock, 0);
+
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Quản lý sản phẩm</h1>
@@ -92,7 +96,7 @@ function App() {
         </button>
       </div>
 
-      {/* Ô tìm kiếm */}
+      {/* Ô tìm kiếm và dropdown lọc */}
       <input
         type="text"
         placeholder="Tìm sản phẩm theo tên..."
@@ -101,7 +105,6 @@ function App() {
         className="border p-2 w-full mb-4"
       />
 
-      {/* Dropdown lọc danh mục */}
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
@@ -112,6 +115,11 @@ function App() {
           <option key={cat} value={cat}>{cat}</option>
         ))}
       </select>
+
+      {/* Hiển thị tổng số */}
+      <p className="mb-4 font-medium">
+        Tổng sản phẩm: {totalProducts} | Tổng tồn kho: {totalStock}
+      </p>
 
       {/* Bảng sản phẩm */}
       <table className="table-auto w-full border border-collapse">
