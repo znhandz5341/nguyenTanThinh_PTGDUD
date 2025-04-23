@@ -15,6 +15,7 @@ function App() {
   });
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,9 +40,13 @@ function App() {
     setProducts(prev => prev.filter(p => p.id !== id));
   };
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products.filter(p => {
+    const matchesName = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
+    return matchesName && matchesCategory;
+  });
+
+  const uniqueCategories = [...new Set(products.map(p => p.category))];
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -95,6 +100,18 @@ function App() {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="border p-2 w-full mb-4"
       />
+
+      {/* Dropdown lọc danh mục */}
+      <select
+        value={selectedCategory}
+        onChange={(e) => setSelectedCategory(e.target.value)}
+        className="border p-2 mb-4 w-full"
+      >
+        <option value="">-- Lọc theo danh mục --</option>
+        {uniqueCategories.map(cat => (
+          <option key={cat} value={cat}>{cat}</option>
+        ))}
+      </select>
 
       {/* Bảng sản phẩm */}
       <table className="table-auto w-full border border-collapse">
