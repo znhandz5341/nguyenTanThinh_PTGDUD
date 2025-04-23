@@ -1,15 +1,50 @@
 import { useState } from 'react';
 
 function App() {
-  const [products] = useState([
+  const [products, setProducts] = useState([
     { id: 1, name: 'Áo thun', price: 150000, category: 'Thời trang', stock: 10 },
     { id: 2, name: 'Laptop Dell', price: 15000000, category: 'Công nghệ', stock: 5 },
     { id: 3, name: 'Nồi cơm điện', price: 700000, category: 'Gia dụng', stock: 8 }
   ]);
 
+  const [form, setForm] = useState({
+    name: '',
+    price: '',
+    category: '',
+    stock: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddProduct = () => {
+    if (!form.name || !form.price || !form.category || !form.stock) return;
+
+    const newProduct = {
+      id: Date.now(),
+      name: form.name,
+      price: parseInt(form.price),
+      category: form.category,
+      stock: parseInt(form.stock)
+    };
+    setProducts(prev => [...prev, newProduct]);
+    setForm({ name: '', price: '', category: '', stock: '' });
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Danh sách sản phẩm</h1>
+
+      <div className="mb-6 space-y-2">
+        <input name="name" value={form.name} onChange={handleChange} placeholder="Tên sản phẩm" className="border p-2 w-full" />
+        <input name="price" value={form.price} onChange={handleChange} placeholder="Giá" type="number" className="border p-2 w-full" />
+        <input name="category" value={form.category} onChange={handleChange} placeholder="Danh mục" className="border p-2 w-full" />
+        <input name="stock" value={form.stock} onChange={handleChange} placeholder="Tồn kho" type="number" className="border p-2 w-full" />
+        <button onClick={handleAddProduct} className="bg-green-500 text-white px-4 py-2 rounded">Thêm sản phẩm</button>
+      </div>
+
       <table className="table-auto w-full border border-collapse">
         <thead>
           <tr className="bg-gray-200">
@@ -27,7 +62,9 @@ function App() {
               <td className="border p-2">{p.price.toLocaleString()} đ</td>
               <td className="border p-2">{p.category}</td>
               <td className="border p-2">{p.stock}</td>
-              <td className="border p-2"><button className="bg-red-500 text-white px-3 py-1 rounded">Xoá</button></td>
+              <td className="border p-2">
+                <button className="bg-red-500 text-white px-3 py-1 rounded">Xoá</button>
+              </td>
             </tr>
           ))}
         </tbody>
