@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Áo thun', price: 150000, category: 'Thời trang', stock: 10 },
-    { id: 2, name: 'Laptop Dell', price: 15000000, category: 'Công nghệ', stock: 5 },
-    { id: 3, name: 'Nồi cơm điện', price: 700000, category: 'Gia dụng', stock: 8 }
-  ]);
+  // Dữ liệu khởi tạo từ localStorage nếu có, nếu không có thì mặc định là mảng rỗng
+  const loadProductsFromLocalStorage = () => {
+    const storedProducts = localStorage.getItem('products');
+    return storedProducts ? JSON.parse(storedProducts) : [];
+  };
 
+  const [products, setProducts] = useState(loadProductsFromLocalStorage());
   const [form, setForm] = useState({
     name: '',
     price: '',
@@ -16,6 +17,11 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Lưu sản phẩm vào localStorage mỗi khi danh sách sản phẩm thay đổi
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
