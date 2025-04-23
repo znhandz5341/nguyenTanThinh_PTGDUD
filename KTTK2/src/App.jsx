@@ -14,6 +14,8 @@ function App() {
     stock: ''
   });
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
@@ -36,6 +38,10 @@ function App() {
   const handleDelete = (id) => {
     setProducts(prev => prev.filter(p => p.id !== id));
   };
+
+  const filteredProducts = products.filter(p =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -81,7 +87,16 @@ function App() {
         </button>
       </div>
 
-      {/* Bảng hiển thị sản phẩm */}
+      {/* Ô tìm kiếm */}
+      <input
+        type="text"
+        placeholder="Tìm sản phẩm theo tên..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="border p-2 w-full mb-4"
+      />
+
+      {/* Bảng sản phẩm */}
       <table className="table-auto w-full border border-collapse">
         <thead>
           <tr className="bg-gray-100">
@@ -93,7 +108,7 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {products.map(p => (
+          {filteredProducts.map(p => (
             <tr key={p.id}>
               <td className="border p-2">{p.name}</td>
               <td className="border p-2">{p.price.toLocaleString()} đ</td>
