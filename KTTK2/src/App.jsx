@@ -33,21 +33,58 @@ function App() {
     setForm({ name: '', price: '', category: '', stock: '' });
   };
 
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Danh sách sản phẩm</h1>
+  const handleDelete = (id) => {
+    setProducts(prev => prev.filter(p => p.id !== id));
+  };
 
+  return (
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Quản lý sản phẩm</h1>
+
+      {/* Form thêm sản phẩm */}
       <div className="mb-6 space-y-2">
-        <input name="name" value={form.name} onChange={handleChange} placeholder="Tên sản phẩm" className="border p-2 w-full" />
-        <input name="price" value={form.price} onChange={handleChange} placeholder="Giá" type="number" className="border p-2 w-full" />
-        <input name="category" value={form.category} onChange={handleChange} placeholder="Danh mục" className="border p-2 w-full" />
-        <input name="stock" value={form.stock} onChange={handleChange} placeholder="Tồn kho" type="number" className="border p-2 w-full" />
-        <button onClick={handleAddProduct} className="bg-green-500 text-white px-4 py-2 rounded">Thêm sản phẩm</button>
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Tên sản phẩm"
+          className="border p-2 w-full"
+        />
+        <input
+          name="price"
+          value={form.price}
+          onChange={handleChange}
+          placeholder="Giá"
+          type="number"
+          className="border p-2 w-full"
+        />
+        <input
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          placeholder="Danh mục"
+          className="border p-2 w-full"
+        />
+        <input
+          name="stock"
+          value={form.stock}
+          onChange={handleChange}
+          placeholder="Tồn kho"
+          type="number"
+          className="border p-2 w-full"
+        />
+        <button
+          onClick={handleAddProduct}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Thêm sản phẩm
+        </button>
       </div>
 
+      {/* Bảng hiển thị sản phẩm */}
       <table className="table-auto w-full border border-collapse">
         <thead>
-          <tr className="bg-gray-200">
+          <tr className="bg-gray-100">
             <th className="border p-2">Tên sản phẩm</th>
             <th className="border p-2">Giá</th>
             <th className="border p-2">Danh mục</th>
@@ -62,8 +99,13 @@ function App() {
               <td className="border p-2">{p.price.toLocaleString()} đ</td>
               <td className="border p-2">{p.category}</td>
               <td className="border p-2">{p.stock}</td>
-              <td className="border p-2">
-                <button className="bg-red-500 text-white px-3 py-1 rounded">Xoá</button>
+              <td className="border p-2 text-center">
+                <button
+                  onClick={() => handleDelete(p.id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                >
+                  Xoá
+                </button>
               </td>
             </tr>
           ))}
