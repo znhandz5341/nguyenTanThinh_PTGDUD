@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductItem from './components/ProductItem';
+// import "../src/App.css"
 
 function App() {
   const loadProductsFromLocalStorage = () => {
